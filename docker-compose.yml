@@ -1,0 +1,12 @@
+services:
+  #  nginx-pixelfed:
+  #  mysql-pixelfed:
+  #  redis-pixelfed:
+  php-fpm-pixelfed:
+    image: ${PHPFDM_IMAGE_NAME}
+    build:
+      context: ./data/dockerfiles/phpfpm/.
+      dockerfile: ./Dockerfile
+    restart: always
+  redis-pixelfed:
+    image:
