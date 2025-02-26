@@ -16,9 +16,16 @@ RUN apk add --no-cache \
   libwebp-dev \
   zlib-dev \
   # ICU dependencies for intl
-  icu-dev
+  icu-dev \
+  # Dependencies for zip
+  libzip-dev \
+  # Dependencies for PECL and Redis
+  ${PHPIZE_DEPS}
 
-# Configure and install GD extension with required features
+# Install Redis extension via PECL
+RUN pecl install redis && docker-php-ext-enable redis
+
+# Configure and install GD extension with required features, install required extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
   && docker-php-ext-install -j$(nproc) \
   bcmath \
@@ -26,13 +33,8 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
   curl \
   exif \
   gd \
-  intl 
-#  json \
-#  mbstring \
-#  openssl \
-#  redis \
-#  tokenizer \
-#  xml \
-#  zip
+  intl \
+  xml \
+  zip
 
 CMD ["php-fpm"]
