@@ -6,7 +6,12 @@ services:
     image: ${PHPFDM_IMAGE_NAME}
     build:
       context: ./data/dockerfiles/phpfpm/.
-      dockerfile: ./Dockerfile
-    restart: always
-  redis-pixelfed:
-    image:
+      dockerfile: Dockerfile
+    restart: unless-stopped
+
+  mariadb-pixelfed:
+    image: ${MARIADB_IMAGE_NAME}
+    restart: unless-stopped
+
+#  redis-pixelfed:
+#    image:
