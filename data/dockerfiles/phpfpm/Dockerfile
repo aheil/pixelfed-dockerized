@@ -4,6 +4,7 @@ LABEL org.opencontainers.image.authors="Andreas Heil @aheil@chaos.social"
 
 # Install dependencies for PHP extensions
 RUN apk add --no-cache \
+  git \
   curl-dev \
   libpng-dev \
   # Additional dependencies for other extensions
@@ -20,7 +21,9 @@ RUN apk add --no-cache \
   # Dependencies for zip
   libzip-dev \
   # Dependencies for PECL and Redis
-  ${PHPIZE_DEPS}
+  ${PHPIZE_DEPS} \
+  # Shell
+  bash
 
 # Install Redis extension via PECL
 RUN pecl install redis && docker-php-ext-enable redis
@@ -37,4 +40,14 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
   xml \
   zip
 
-CMD ["php-fpm"]
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /var/www/pixelfed
+
+# Copy entrypoint script
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
