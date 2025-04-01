@@ -1,0 +1,6 @@
+data/mariadb
+data/ssl
+data/nginx/ssl
+data/nginx/conf.d
+data/redis
+
