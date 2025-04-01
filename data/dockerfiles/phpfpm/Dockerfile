@@ -20,6 +20,8 @@ RUN apk add --no-cache \
   icu-dev \
   # Dependencies for zip
   libzip-dev \
+  # MySQL dependencies
+  mariadb-dev \
   # Dependencies for PECL and Redis
   ${PHPIZE_DEPS} \
   # Shell
@@ -38,7 +40,9 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
   gd \
   intl \
   xml \
-  zip
+  zip \
+  pdo \
+  pdo_mysql
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
